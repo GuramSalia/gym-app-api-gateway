@@ -17,8 +17,12 @@ public class RequestTraceFilter implements GlobalFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestTraceFilter.class);
 
-    @Autowired
     FilterUtility filterUtility;
+
+    @Autowired
+    public RequestTraceFilter(FilterUtility filterUtility) {
+        this.filterUtility = filterUtility;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -26,7 +30,7 @@ public class RequestTraceFilter implements GlobalFilter {
         HttpHeaders requestHeaders = exchange.getRequest().getHeaders();
         if (isCorrelationIdPresent(requestHeaders)) {
             logger.info("\n\nGATEWAY request -> correlation-id found in RequestTraceFilter : {}\n\n",
-                         filterUtility.getCorrelationId(requestHeaders));
+                        filterUtility.getCorrelationId(requestHeaders));
         } else {
             String correlationID = generateCorrelationId();
             exchange = filterUtility.setCorrelationId(exchange, correlationID);
@@ -37,12 +41,9 @@ public class RequestTraceFilter implements GlobalFilter {
     }
 
     private boolean isCorrelationIdPresent(HttpHeaders requestHeaders) {
-        if (filterUtility.getCorrelationId(requestHeaders) != null) {
-            return true;
-        } else {
-            return false;
-        }
+            return filterUtility.getCorrelationId(requestHeaders) != null;
     }
+
     private String generateCorrelationId() {
         return java.util.UUID.randomUUID().toString();
     }

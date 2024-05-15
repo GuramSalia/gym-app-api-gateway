@@ -16,8 +16,12 @@ public class ResponseTraceFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(ResponseTraceFilter.class);
 
-    @Autowired
     FilterUtility filterUtility;
+
+    @Autowired
+    public ResponseTraceFilter(FilterUtility filterUtility) {
+        this.filterUtility = filterUtility;
+    }
 
     @Bean
     public GlobalFilter postGlobalFilter() {
