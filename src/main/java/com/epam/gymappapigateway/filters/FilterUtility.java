@@ -21,9 +21,6 @@ public class FilterUtility {
             return null;
         }
 
-//        List<String> requestHeaderList = requestHeaders.get(CORRELATION_ID);
-//        assert requestHeaderList != null;
-//        return requestHeaderList.stream().findFirst().get();
     }
 
     public ServerWebExchange setRequestHeader(ServerWebExchange exchange, String name, String value) {
